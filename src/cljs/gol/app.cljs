@@ -4,10 +4,10 @@
 
 
 (def generation (atom 0))
-(def world-width (atom 10))
-(def world-height (atom 10))
+(def world-width (atom 50))
+(def world-height (atom 30))
 
-(def pixel-width (atom 50))
+(def pixel-width (atom 20))
 
 (def running? (atom false))
 
