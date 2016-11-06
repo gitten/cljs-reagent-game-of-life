@@ -125,8 +125,8 @@
           [x y]]))
 
 
-(defn set-pixel [index a-world px-width]
-  (let [[state [x y]] (@a-world index)
+(defn set-pixel [index world-ratom px-width]
+  (let [[state [x y]] (@world-ratom index)
         alive? (if (= state 1) "black" "white")]
    [:rect
     {:x (* x @px-width)
@@ -135,14 +135,14 @@
      :height @px-width
      :fill alive?
      :on-click
-     #(reset! a-world (toggle-life alive? index @a-world x y))}]))
+     #(reset! world-ratom (toggle-life alive? index @world-ratom x y))}]))
 
 
-(defn population [a-world]
+(defn populate [world-ratom]
   (let [max-pop (* @world-width @world-height)]
     [:svg
      (for [index (range max-pop)]
-       ^{:key index} [set-pixel index a-world pixel-width])]))
+       ^{:key index} [set-pixel index world-ratom pixel-width])]))
 
 
 (defn x-grid-lines []
@@ -169,11 +169,11 @@
                  :stroke :grey}])])
 
 
-(defn world-view [a-world]
+(defn world-view [world-ratom]
   [:div
    [:svg {:width (* @world-width @pixel-width)
           :height (* @world-height @pixel-width)}
-    [population a-world]
+    [populate world-ratom]
     [x-grid-lines]
     [y-grid-lines]]])
 
@@ -181,7 +181,7 @@
 (defn generation-stepper [world-ratom]
   [:button
    {:on-click #(reset! world-ratom (a-new-world @world-ratom @world-width @world-height))}
-   "Step Generation"])
+   "Next Generation"])
 
 
 (defn run-state [world-ratom]
@@ -221,13 +221,3 @@
 (defn init []
   (reagent/render-component [app-view world]
                             (.getElementById js/document "container")))
-
-
-(defn more-button
-  [counter]
-  [:button
-   {:class "button-class"
-    :on-click #(swap! counter inc)}
-   "more"])
-
-
