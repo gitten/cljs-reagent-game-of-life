@@ -7,7 +7,7 @@
 (def world-width (atom 50))
 (def world-height (atom 30))
 
-(def pixel-width (atom 20))
+(def pixel-width (atom 15))
 
 (def running? (atom false))
 
@@ -30,11 +30,11 @@
   (make-world (replicate (* @world-width @world-height) 0)))
 
 
-(def rand-world
+(defn rand-world []
   (let [max-pop (* @world-width @world-height)]
     (make-world (repeatedly max-pop #(rand-int 2)))))
 
-(def world (atom init-world))
+(def world (atom rand-world))
 
 
 ;;;;
@@ -199,7 +199,7 @@
 
 (defn random-world [world-ratom]
   [:button
-   {:on-click #(reset! world-ratom rand-world)}
+   {:on-click #(reset! world-ratom (rand-world))}
    "Random Population"])
 
 
