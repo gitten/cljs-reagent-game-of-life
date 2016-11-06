@@ -1,0 +1,3 @@
+{:require  [gol.app]
+ :init-fns [gol.app/init]
+ :compiler-options {:asset-path "js/app.out"}}
